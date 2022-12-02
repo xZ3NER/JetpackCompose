@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.example.firstapp'
-    compileSdk 32
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.example.firstapp"
@@ -44,6 +44,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    buildToolsVersion '31.0.0'
 }
 
 dependencies {
