@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TodoListApp</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+</resources>
