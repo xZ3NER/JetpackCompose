@@ -35,69 +35,70 @@ fun LoginBodyContent(navController: NavController) {
     ) {
         TextField(
             label = stringResource(id = R.string.login_username),
-            false,
-            navController
         )
         Spacer(modifier = Modifier.height(30.dp))
-        TextField(
+        PasswordTextField(
             label = stringResource(id = R.string.login_password),
-            true,
             navController
         )
     }
 }
 
 @Composable
-fun TextField(label: String, isPassword: Boolean, navController: NavController) {
+fun TextField(label: String) {
     var text by remember {
         mutableStateOf("")
     }
 
-    if (!isPassword) {
-
-        TextField(
-            value = text,
-            onValueChange = { text = it },
-            label = { Text(label) },
-            singleLine = true,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.background
-            )
+    TextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text(label) },
+        singleLine = true,
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = MaterialTheme.colors.background
         )
+    )
 
-    } else {
-        var hidden by remember { mutableStateOf(isPassword) }
+}
 
-        TextField(
-            value = text,
-            onValueChange = { text = it },
-            label = { Text(label) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            singleLine = true,
-            visualTransformation =
-            if (hidden) PasswordVisualTransformation() else VisualTransformation.None,
-            trailingIcon = {
-                IconButton(onClick = { hidden = !hidden }) {
-                    val vector = painterResource(
-                        if (hidden) R.drawable.ic_visibility
-                        else R.drawable.ic_visibility_off
-                    )
-                    val description = if (hidden) "Hide password" else "Show password"
-                    Icon(
-                        painter = vector,
-                        contentDescription = description,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.background
-            ),
-            keyboardActions = KeyboardActions(onDone = {
-                if (text == "passwd") {
-                    navController.navigate(AppScreens.TodoListScreen.route)
-                }
-            })
-        )
+@Composable
+fun PasswordTextField(label: String, navController: NavController) {
+    var text by remember {
+        mutableStateOf("")
     }
+
+    var hidden by remember { mutableStateOf(true) }
+
+    TextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text(label) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        singleLine = true,
+        visualTransformation =
+        if (hidden) PasswordVisualTransformation() else VisualTransformation.None,
+        trailingIcon = {
+            IconButton(onClick = { hidden = !hidden }) {
+                val vector = painterResource(
+                    if (hidden) R.drawable.ic_visibility
+                    else R.drawable.ic_visibility_off
+                )
+                val description = if (hidden) "Hide password" else "Show password"
+                Icon(
+                    painter = vector,
+                    contentDescription = description,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = MaterialTheme.colors.background
+        ),
+        keyboardActions = KeyboardActions(onDone = {
+            if (text == "passwd") {
+                navController.navigate(AppScreens.TodoListScreen.route)
+            }
+        })
+    )
 }
