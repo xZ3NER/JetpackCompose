@@ -12,13 +12,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.todolistapp.R
+import com.example.todolistapp.navigation.AppNavigation
 import com.example.todolistapp.navigation.AppScreens
+import com.example.todolistapp.ui.theme.TodoListAppTheme
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController?) {
 
     Scaffold() {
         LoginBodyContent(navController)
@@ -26,11 +30,11 @@ fun LoginScreen(navController: NavController) {
 }
 
 @Composable
-fun LoginBodyContent(navController: NavController) {
+fun LoginBodyContent(navController: NavController?) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(40.dp),
+            .padding(top = 100.dp)
+            .padding(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(
@@ -57,13 +61,14 @@ fun TextField(label: String) {
         singleLine = true,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = MaterialTheme.colors.background
-        )
+        ),
+        modifier = Modifier.fillMaxWidth()
     )
 
 }
 
 @Composable
-fun PasswordTextField(label: String, navController: NavController) {
+fun PasswordTextField(label: String, navController: NavController?) {
     var text by remember {
         mutableStateOf("")
     }
@@ -97,8 +102,15 @@ fun PasswordTextField(label: String, navController: NavController) {
         ),
         keyboardActions = KeyboardActions(onDone = {
             if (text == "passwd") {
-                navController.navigate(AppScreens.TodoListScreen.route)
+                navController?.navigate(AppScreens.TodoListScreen.route)
             }
-        })
+        }),
+        modifier = Modifier.fillMaxWidth()
     )
+}
+
+@Preview(showSystemUi = true, device = Devices.PIXEL_4)
+@Composable
+fun LoginPreview() {
+    LoginScreen(null)
 }

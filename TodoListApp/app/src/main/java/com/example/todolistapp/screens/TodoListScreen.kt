@@ -8,8 +8,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.todolistapp.dataClasses.TodoList
 
@@ -28,30 +32,38 @@ val list = listOf(
     TodoList("TITLE 12", "body 12"),
     TodoList("TITLE 13", "body 13"),
     TodoList("TITLE 14", "body 14"),
-    TodoList("TITLE 15", "body 15")
+    TodoList("TITLE 15", "body 15"),
+    TodoList("TITLE 15", "body 15"),
+    TodoList("TITLE 15", "body 15"),
+    TodoList(
+        "Jetpack Compose",
+        "Ver videos de jetpack compone, mutablestateOf, variables, modificarlos, etc...Ver videos de jetpack compone, mutablestateOf, variables, modificarlos, etc...Ver videos de jetpack compone, mutablestateOf, variables, modificarlos, etc...Ver videos de jetpack compone, mutablestateOf, variables, modificarlos, etc..."
+    )
 )
 
 @Composable
-fun TodoListScreen(navController: NavController) {
+fun TodoListScreen(navController: NavController?) {
     Scaffold(topBar = {
         TopAppBar() {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
+            Icon(imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Arrow back",
-                modifier = Modifier.clickable { navController.popBackStack() })
-            Spacer(modifier = Modifier.width(8.dp))
+                modifier = Modifier.clickable { navController?.popBackStack() })
+            Spacer(modifier = Modifier.width(15.dp))
             Text(text = "TodoList")
         }
-    }
-    ) {
+    }) {
         TodoListBodyContent(navController)
     }
 }
 
 @Composable
-fun TodoListBodyContent(navController: NavController) {
+fun TodoListBodyContent(navController: NavController?) {
 
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+    ) {
         items(list) {
             PaintItem(it)
         }
@@ -64,7 +76,10 @@ fun PaintItem(listItem: TodoList) {
     var selected by remember {
         mutableStateOf(false)
     }
-    Row() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
         RadioButton(selected = selected, onClick = {
             selected = !selected
         })
@@ -80,10 +95,23 @@ fun Item(title: String, body: String) {
         mutableStateOf(false)
     }
 
-    Column(modifier = Modifier.fillMaxWidth().clickable {
-        clicked = !clicked
-    }) {
-        Text(text = title, style = MaterialTheme.typography.subtitle1)
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .clickable {
+            clicked = !clicked
+        }) {
+        Text(
+            text = title,
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.subtitle1,
+            maxLines = 1
+        )
         if (clicked) Text(text = body, style = MaterialTheme.typography.subtitle2)
     }
+}
+
+@Preview(showSystemUi = true, device = Devices.PIXEL_4)
+@Composable
+fun TodoListPreview() {
+    TodoListScreen(null)
 }
