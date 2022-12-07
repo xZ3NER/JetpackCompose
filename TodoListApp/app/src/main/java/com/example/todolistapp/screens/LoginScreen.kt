@@ -17,12 +17,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.todolistapp.R
-import com.example.todolistapp.navigation.AppNavigation
 import com.example.todolistapp.navigation.AppScreens
-import com.example.todolistapp.ui.theme.TodoListAppTheme
+import com.example.todolistapp.viewModel.LoginViewModel
 
 @Composable
-fun LoginScreen(navController: NavController?) {
+fun LoginScreen(navController: NavController?, loginViewModel: LoginViewModel) {
 
     Scaffold() {
         LoginBodyContent(navController)
@@ -112,5 +111,5 @@ fun PasswordTextField(label: String, navController: NavController?) {
 @Preview(showSystemUi = true, device = Devices.PIXEL_4)
 @Composable
 fun LoginPreview() {
-    LoginScreen(null)
+    LoginScreen(null,LoginViewModel())
 }
