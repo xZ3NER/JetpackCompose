@@ -24,39 +24,35 @@ import com.example.todolistapp.viewModel.LoginViewModel
 fun LoginScreen(navController: NavController?, loginViewModel: LoginViewModel) {
 
     Scaffold() {
-        LoginBodyContent(navController)
+        LoginBodyContent(navController, loginViewModel)
     }
 }
 
 @Composable
-fun LoginBodyContent(navController: NavController?) {
+fun LoginBodyContent(navController: NavController?, loginViewModel: LoginViewModel) {
     Column(
         modifier = Modifier
             .padding(top = 100.dp)
             .padding(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextField(
-            label = stringResource(id = R.string.login_username),
+        UsernameTextField(
+            loginViewModel
         )
         Spacer(modifier = Modifier.height(30.dp))
         PasswordTextField(
-            label = stringResource(id = R.string.login_password),
-            navController
+            navController,
+            loginViewModel
         )
     }
 }
 
 @Composable
-fun TextField(label: String) {
-    var text by remember {
-        mutableStateOf("")
-    }
-
+fun UsernameTextField(loginViewModel: LoginViewModel) {
     TextField(
-        value = text,
-        onValueChange = { text = it },
-        label = { Text(label) },
+        value = loginViewModel.username,
+        onValueChange = { loginViewModel.updateUsername(it) },
+        label = { Text(text = stringResource(id = R.string.login_username)) },
         singleLine = true,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = MaterialTheme.colors.background
@@ -67,28 +63,23 @@ fun TextField(label: String) {
 }
 
 @Composable
-fun PasswordTextField(label: String, navController: NavController?) {
-    var text by remember {
-        mutableStateOf("")
-    }
-
-    var hidden by remember { mutableStateOf(true) }
+fun PasswordTextField(navController: NavController?, loginViewModel: LoginViewModel) {
 
     TextField(
-        value = text,
-        onValueChange = { text = it },
-        label = { Text(label) },
+        value = loginViewModel.password,
+        onValueChange = { loginViewModel.updatePassword(it) },
+        label = { Text(text = stringResource(id = R.string.login_password)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         visualTransformation =
-        if (hidden) PasswordVisualTransformation() else VisualTransformation.None,
+        if (loginViewModel.pwdHidden) PasswordVisualTransformation() else VisualTransformation.None,
         trailingIcon = {
-            IconButton(onClick = { hidden = !hidden }) {
+            IconButton(onClick = { loginViewModel.changeHidden() }) {
                 val vector = painterResource(
-                    if (hidden) R.drawable.ic_visibility
+                    if (loginViewModel.pwdHidden) R.drawable.ic_visibility
                     else R.drawable.ic_visibility_off
                 )
-                val description = if (hidden) "Hide password" else "Show password"
+                val description = if (loginViewModel.pwdHidden) "Hide password" else "Show password"
                 Icon(
                     painter = vector,
                     contentDescription = description,
@@ -100,7 +91,7 @@ fun PasswordTextField(label: String, navController: NavController?) {
             backgroundColor = MaterialTheme.colors.background
         ),
         keyboardActions = KeyboardActions(onDone = {
-            if (text == "passwd") {
+            if (loginViewModel.checkLogin()) {
                 navController?.navigate(AppScreens.TodoListScreen.route)
             }
         }),
@@ -111,5 +102,5 @@ fun PasswordTextField(label: String, navController: NavController?) {
 @Preview(showSystemUi = true, device = Devices.PIXEL_4)
 @Composable
 fun LoginPreview() {
-    LoginScreen(null,LoginViewModel())
+    LoginScreen(null, LoginViewModel())
 }

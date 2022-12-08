@@ -6,6 +6,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.todolistapp.screens.LoginScreen
 import com.example.todolistapp.screens.TodoListScreen
+import com.example.todolistapp.viewModel.LoginViewModel
+import com.example.todolistapp.viewModel.TodoListViewModel
 
 @Composable
 fun AppNavigation() {
@@ -13,11 +15,11 @@ fun AppNavigation() {
 
     NavHost(navController = navController, startDestination = AppScreens.LoginScreen.route) {
         composable(route = AppScreens.LoginScreen.route) {
-            LoginScreen(navController)
+            LoginScreen(navController, LoginViewModel())
         }
 
         composable(route = AppScreens.TodoListScreen.route) {
-            TodoListScreen(navController)
+            TodoListScreen(navController, TodoListViewModel())
         }
     }
 }
