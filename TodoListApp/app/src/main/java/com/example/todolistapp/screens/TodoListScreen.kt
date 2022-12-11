@@ -42,15 +42,13 @@ fun TodoListBodyContent(navController: NavController?, todoListViewModel: TodoLi
             .padding(15.dp)
     ) {
         items(todoListViewModel.list) {
-            Item(it,todoListViewModel) {
-                todoListViewModel.changeChecked(it)
-            }
+            Item(it,todoListViewModel)
         }
     }
 }
 
 @Composable
-fun Item(listItem: TodoList,todoListViewModel: TodoListViewModel, changeCheck: () -> Unit) {
+fun Item(listItem: TodoList,todoListViewModel: TodoListViewModel) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -59,7 +57,7 @@ fun Item(listItem: TodoList,todoListViewModel: TodoListViewModel, changeCheck: (
         RadioButton(
             selected = listItem.checked,
             onClick = {
-               changeCheck()
+                todoListViewModel.changeChecked(listItem)
             })
         Spacer(modifier = Modifier.width(20.dp))
         ItemBody(listItem) {

@@ -6,24 +6,22 @@ import com.example.todolistapp.dataClasses.TodoList
 
 class TodoListViewModel() : ViewModel() {
 
-    //TODO Not well implemented
-    private var _todoList = getListItems().toMutableStateList()
-    val list: List<TodoList>
-        get() = _todoList
+    var list = getListItems().toMutableStateList()
+        private set
 
     fun changeChecked(item: TodoList) =
-        list.find { it.title == item.title }?.let { todoItem ->
-            todoItem.checked = !todoItem.checked
-            _todoList.add(_todoList.indexOf(item),todoItem)
-            _todoList.remove(item)
+        list.find { it.title == item.title }?.let { it ->
+            val index = list.indexOf(it)
+            list[index] = list[index].copy(checked = !it.checked)
         }
 
     fun changeClicked(item: TodoList) =
-        list.find { it.title == item.title }?.let { todoItem ->
-            todoItem.clicked = !todoItem.clicked
-            _todoList.add(_todoList.indexOf(item),todoItem)
-            _todoList.remove(item)
+        list.find { it.title == item.title }?.let { it ->
+            val index = list.indexOf(it)
+            list[index] = list[index].copy(clicked = !it.clicked)
         }
+
+
 }
 
 private fun getListItems() = List(30) { i -> TodoList("TITLE $i","body $i", checked = false, clicked = false) }
