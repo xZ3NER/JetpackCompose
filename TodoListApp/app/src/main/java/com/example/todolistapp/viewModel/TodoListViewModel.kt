@@ -9,18 +9,24 @@ class TodoListViewModel() : ViewModel() {
     var list = getListItems().toMutableStateList()
         private set
 
-    fun changeChecked(item: TodoList) =
+    fun changeChecked(item: TodoList) {
         list.find { it.title == item.title }?.let { it ->
             val index = list.indexOf(it)
             list[index] = list[index].copy(checked = !it.checked)
         }
+    }
 
-    fun changeClicked(item: TodoList) =
+
+    fun changeClicked(item: TodoList) {
         list.find { it.title == item.title }?.let { it ->
             val index = list.indexOf(it)
             list[index] = list[index].copy(clicked = !it.clicked)
         }
+    }
 
+    fun deleteItem(item:TodoList) {
+        list.remove(item)
+    }
 
 }
 

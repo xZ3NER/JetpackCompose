@@ -10,11 +10,13 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.todolistapp.R
 import com.example.todolistapp.dataClasses.TodoList
 import com.example.todolistapp.viewModel.TodoListViewModel
 
@@ -38,7 +40,7 @@ fun TodoListBodyContent(navController: NavController?, todoListViewModel: TodoLi
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(15.dp)
     ) {
         items(todoListViewModel.list) {
@@ -52,16 +54,37 @@ fun Item(listItem: TodoList,todoListViewModel: TodoListViewModel) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        modifier = Modifier.fillMaxWidth()
     ) {
-        RadioButton(
-            selected = listItem.checked,
-            onClick = {
-                todoListViewModel.changeChecked(listItem)
-            })
-        Spacer(modifier = Modifier.width(20.dp))
-        ItemBody(listItem) {
-            todoListViewModel.changeClicked(listItem)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start,
+        ) {
+            RadioButton(
+                selected = listItem.checked,
+                onClick = {
+                    todoListViewModel.changeChecked(listItem)
+                })
+            Spacer(modifier = Modifier.width(10.dp))
+            ItemBody(listItem) {
+                todoListViewModel.changeClicked(listItem)
+            }
+        }
+        if (listItem.checked){
+            Box(
+                contentAlignment = Alignment.CenterEnd,
+                modifier = Modifier.fillMaxWidth()
+            ){
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_bin),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable {
+                            todoListViewModel.deleteItem(listItem)
+                        },
+                )
+            }
         }
     }
 }
@@ -70,7 +93,6 @@ fun Item(listItem: TodoList,todoListViewModel: TodoListViewModel) {
 fun ItemBody(listItem: TodoList,changeClick: () -> Unit) {
 
     Column(modifier = Modifier
-        .fillMaxWidth()
         .clickable {
             changeClick()
         }) {

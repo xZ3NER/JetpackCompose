@@ -7,14 +7,17 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.todolistapp.R
 import com.example.todolistapp.navigation.AppScreens
@@ -34,16 +37,28 @@ fun LoginBodyContent(navController: NavController?, loginViewModel: LoginViewMod
         modifier = Modifier
             .padding(top = 100.dp)
             .padding(50.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        UsernameTextField(
-            loginViewModel
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        PasswordTextField(
-            navController,
-            loginViewModel
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            UsernameTextField(
+                loginViewModel
+            )
+            Spacer(modifier = Modifier.height(30.dp))
+            PasswordTextField(
+                navController,
+                loginViewModel
+            )
+        }
+        if (!loginViewModel.validPassword) {
+            Box(
+                modifier = Modifier.padding(start = 5.dp),
+                contentAlignment = Alignment.CenterStart
+            ) {
+
+                Text(text = "Wrong password*", color = Color.Red, fontSize = 10.sp)
+            }
+        }
     }
 }
 
@@ -79,7 +94,7 @@ fun PasswordTextField(navController: NavController?, loginViewModel: LoginViewMo
                     if (loginViewModel.pwdHidden) R.drawable.ic_visibility
                     else R.drawable.ic_visibility_off
                 )
-                val description = if (loginViewModel.pwdHidden) "Hide password" else "Show password"
+                val description = null
                 Icon(
                     painter = vector,
                     contentDescription = description,
@@ -91,8 +106,12 @@ fun PasswordTextField(navController: NavController?, loginViewModel: LoginViewMo
             backgroundColor = MaterialTheme.colors.background
         ),
         keyboardActions = KeyboardActions(onDone = {
-            if (loginViewModel.checkLogin()) {
+            if (loginViewModel.checkPassword() && loginViewModel.checkUsername()) {
                 navController?.navigate(AppScreens.TodoListScreen.route)
+            } else {
+                if (loginViewModel.validPassword) {
+                    loginViewModel.changeValidStatePassword()
+                }
             }
         }),
         modifier = Modifier.fillMaxWidth()

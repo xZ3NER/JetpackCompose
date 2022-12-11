@@ -28,7 +28,26 @@ class LoginViewModel(): ViewModel() {
         pwdHidden = !pwdHidden
     }
 
-    fun checkLogin(): Boolean {
-        return this.username == "peng" && this.password == "peng"
+//    var validUsername by mutableStateOf(true)
+//        private set
+
+    var validPassword by mutableStateOf(true)
+        private set
+
+//    fun changeValidStateUsername() {
+//        validUsername = !validUsername
+//    }
+
+    fun changeValidStatePassword() {
+        validPassword = !validPassword
     }
+
+    fun checkUsername(): Boolean {
+        return this.username == "peng"
+    }
+
+    fun checkPassword(): Boolean {
+        return this.password == "peng"
+    }
+
 }
