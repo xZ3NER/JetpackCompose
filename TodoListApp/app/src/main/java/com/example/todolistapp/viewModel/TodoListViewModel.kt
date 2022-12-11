@@ -11,16 +11,19 @@ class TodoListViewModel() : ViewModel() {
     val list: List<TodoList>
         get() = _todoList
 
-//    fun remove(item: TodoList) {
-//        _todoList.remove(item)
-//    }
-
     fun changeChecked(item: TodoList) =
         list.find { it.title == item.title }?.let { todoItem ->
             todoItem.checked = !todoItem.checked
             _todoList.add(_todoList.indexOf(item),todoItem)
             _todoList.remove(item)
         }
+
+    fun changeClicked(item: TodoList) =
+        list.find { it.title == item.title }?.let { todoItem ->
+            todoItem.clicked = !todoItem.clicked
+            _todoList.add(_todoList.indexOf(item),todoItem)
+            _todoList.remove(item)
+        }
 }
 
-private fun getListItems() = List(30) { i -> TodoList("TITLE $i","body $i",false) }
+private fun getListItems() = List(30) { i -> TodoList("TITLE $i","body $i", checked = false, clicked = false) }

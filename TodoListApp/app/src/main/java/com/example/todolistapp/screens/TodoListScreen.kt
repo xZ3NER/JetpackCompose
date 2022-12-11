@@ -42,7 +42,7 @@ fun TodoListBodyContent(navController: NavController?, todoListViewModel: TodoLi
             .padding(15.dp)
     ) {
         items(todoListViewModel.list) {
-            Item(it) {
+            Item(it,todoListViewModel) {
                 todoListViewModel.changeChecked(it)
             }
         }
@@ -50,7 +50,7 @@ fun TodoListBodyContent(navController: NavController?, todoListViewModel: TodoLi
 }
 
 @Composable
-fun Item(listItem: TodoList, changeCheck: () -> Unit) {
+fun Item(listItem: TodoList,todoListViewModel: TodoListViewModel, changeCheck: () -> Unit) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -62,28 +62,27 @@ fun Item(listItem: TodoList, changeCheck: () -> Unit) {
                changeCheck()
             })
         Spacer(modifier = Modifier.width(20.dp))
-        ItemBody(title = listItem.title, body = listItem.body)
+        ItemBody(listItem) {
+            todoListViewModel.changeClicked(listItem)
+        }
     }
 }
 
 @Composable
-fun ItemBody(title: String, body: String) {
-    var itemClicked by remember {
-        mutableStateOf(false)
-    }
+fun ItemBody(listItem: TodoList,changeClick: () -> Unit) {
 
     Column(modifier = Modifier
         .fillMaxWidth()
         .clickable {
-            itemClicked = !itemClicked
+            changeClick()
         }) {
         Text(
-            text = title,
+            text = listItem.title,
             fontSize = 20.sp,
             style = MaterialTheme.typography.subtitle1,
             maxLines = 1
         )
-        if (itemClicked) Text(text = body, style = MaterialTheme.typography.subtitle2)
+        if (listItem.clicked) Text(text = listItem.body, style = MaterialTheme.typography.subtitle2)
     }
 }
 
