@@ -59,6 +59,16 @@ fun LoginBodyContent(navController: NavController?, loginViewModel: LoginViewMod
                 Text(text = "Wrong password*", color = Color.Red, fontSize = 10.sp)
             }
         }
+        Box(
+            contentAlignment = Alignment.CenterEnd,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                onClick = { /*TODO*/ }
+            ) {
+                Text(text = stringResource(id = R.string.login_button))
+            }
+        }
     }
 }
 
