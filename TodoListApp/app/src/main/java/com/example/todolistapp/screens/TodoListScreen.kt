@@ -44,13 +44,13 @@ fun TodoListBodyContent(navController: NavController?, todoListViewModel: TodoLi
             .padding(15.dp)
     ) {
         items(todoListViewModel.list) {
-            Item(it,todoListViewModel)
+            Item(it, todoListViewModel)
         }
     }
 }
 
 @Composable
-fun Item(listItem: TodoList,todoListViewModel: TodoListViewModel) {
+fun Item(listItem: TodoList, todoListViewModel: TodoListViewModel) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -70,11 +70,11 @@ fun Item(listItem: TodoList,todoListViewModel: TodoListViewModel) {
                 todoListViewModel.changeClicked(listItem)
             }
         }
-        if (listItem.checked){
+        if (listItem.checked) {
             Box(
                 contentAlignment = Alignment.CenterEnd,
                 modifier = Modifier.fillMaxWidth()
-            ){
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_bin),
                     contentDescription = null,
@@ -90,7 +90,7 @@ fun Item(listItem: TodoList,todoListViewModel: TodoListViewModel) {
 }
 
 @Composable
-fun ItemBody(listItem: TodoList,changeClick: () -> Unit) {
+fun ItemBody(listItem: TodoList, changeClick: () -> Unit) {
 
     Column(modifier = Modifier
         .clickable {

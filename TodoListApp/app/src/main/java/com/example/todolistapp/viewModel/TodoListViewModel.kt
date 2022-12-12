@@ -24,10 +24,11 @@ class TodoListViewModel() : ViewModel() {
         }
     }
 
-    fun deleteItem(item:TodoList) {
+    fun deleteItem(item: TodoList) {
         list.remove(item)
     }
 
 }
 
-private fun getListItems() = List(30) { i -> TodoList("TITLE $i","body $i", checked = false, clicked = false) }
+private fun getListItems() =
+    List(30) { i -> TodoList("TITLE $i", "body $i", checked = false, clicked = false) }

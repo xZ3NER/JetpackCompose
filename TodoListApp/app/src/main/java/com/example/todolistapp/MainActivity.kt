@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TodoListAppTheme {
-                    AppNavigation()
+                AppNavigation()
             }
         }
     }

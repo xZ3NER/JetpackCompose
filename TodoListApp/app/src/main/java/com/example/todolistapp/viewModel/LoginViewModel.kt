@@ -5,19 +5,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
-class LoginViewModel(): ViewModel() {
+class LoginViewModel() : ViewModel() {
 
     var username by mutableStateOf("")
         private set
 
-    fun updateUsername(text:String) {
+    fun updateUsername(text: String) {
         username = text
     }
 
     var password by mutableStateOf("")
         private set
 
-    fun updatePassword(text:String) {
+    fun updatePassword(text: String) {
         password = text
     }
 
